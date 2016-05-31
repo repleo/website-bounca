@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="BounCA is a tool to manage your personal SSL certificates and authorities in a central and easy to use interfaces. It provides an easy accessible web interface to the OpenSSL command line tool and an administration tool for all your signed certificates and revocation lists. Create and manage your own X.509 / PKI key and certificate trust infrastructure in a couple of seconds.">
+    <meta name=keywords content="OpenSSL, PKI, X509, SSL, Certificate, Key, PKCS12, PEM, Root Authority, Certificate Authority, Security, Encryption, Authorisation, Authentications, Ansible, Bare Metal, Docker">
+    <meta name="author" content="Repleo, Jeroen Arnoldus <jeroen@repleo.nl>">
+    <meta name="google-site-verification" content="2QfQ6DYw4Bk-y6V3JrX-ElDNHgbUprfsEdgKdHwDerk" />
+    <title>BounCA - Your Own Chain of Trust</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.css" rel="stylesheet">
+    <link href="/css/bounca.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+	<link rel="apple-touch-icon" sizes="57x57" href="/img/ico/apple-touch-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/img/ico/apple-touch-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/img/ico/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/img/ico/apple-touch-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/img/ico/apple-touch-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/img/ico/apple-touch-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/img/ico/apple-touch-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/img/ico/apple-touch-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/img/ico/apple-touch-icon-180x180.png">
+	<link rel="icon" type="image/png" href="/img/ico/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/img/ico/android-chrome-192x192.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="/img/ico/favicon-96x96.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="/img/ico/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/img/ico/manifest.json">
+	<link rel="mask-icon" href="/img/ico/safari-pinned-tab.svg" color="#5bbad5">
+	<link rel="shortcut icon" href="/img/ico/favicon.ico">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="msapplication-TileImage" content="/img/ico/mstile-144x144.png">
+	<meta name="msapplication-config" content="/img/ico/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
+
+  </head>
+  <body>
+      <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+           var u="//piwik.repleo.nl/";
+           _paq.push(['setTrackerUrl', u+'piwik.php']);
+           _paq.push(['setSiteId', 12]);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+           })();
+          </script>
+      <noscript><p><img src="//piwik.repleo.nl/piwik.php?idsite=12" style="border:0;" alt="" /></p></noscript>
+
+      
+<main class="bs-docs-header" id="content" role="main" tabindex="-1">
+    <div class="container">
+        <h1>Getting started</h1>
+        <p>An overview of BounCA, how to download and use, basic examples, and more.</p>
+    </div>
+</main>
+
+
+<div class="container bs-docs-container">
+    <div class="row">
+        <div class="col-md-9" role="main">
+            <div class="bs-docs-section">
+                <h1 id="download" class="page-header">Download</h1>
+            </div>
+            <p class="lead">BounCA has a few easy ways to quickly get started, each one appealing to a different security level. Read through to see what suits your particular needs.</p>
+            <div class="row bs-downloads">
+                <div class="col-sm-4">
+                    <h3 id="download-sass">Ansible</h3>
+                    <p>The <a href="https://github.com/repleo/ansible-role-bounca">BounCA ansible role</a> offers you an automatic deployment of BounCA. This is the recommended way of installing BounCA. Use this script for virtual machines or bare metal (very secure) installation</p>
+                </div>
+                <div class="col-sm-4">
+                    <h3 id="download-bootstrap">Docker</h3>
+                    <p>BounCA installation in one mouse click. Use this profile if you want to try BounCA or use BounCA as a locally deployed tool to generate self-signed SSL certificates.</p>
+                </div>
+                <div class="col-sm-4">
+                    <h3 id="download-source">Source code</h3>
+                    <p>Download the BounCA source to install BounCA yourself. You need an Python 3.4+ environment and a PostgreSQL database.</p>
+                    <p><a href="https://github.com/repleo/bounca/archive/v0.1.0.zip" class="btn btn-lg btn-outline">Download source</a> </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container bs-docs-container">
+    <div class="row">
+        <div class="col-md-9" role="main">
+            <h2>Ansible Deployment</h2>
+            <p>Ansible offers the easiest way of creating a BounCA deployment for hosting your Certificate Authority.</p>
+            <p>You need to have (root) access to a fresh installed Debian Jessie (virtual) machine. On your local machine you need to have a recent 2+ Ansible installation.</p>
+            <p>Create your playbook <code>install-bounca.yml</code>:</p>
+
+<pre>
+- hosts: all
+remote_user: root
+roles:
+- { role: repleo.bounca,
+bounca_timezone: /usr/share/zoneinfo/Europe/Amsterdam,
+bounca_db_user: bounca,
+bounca_db_password: <YOUR DB PASSWORD>,
+    bounca_db_host: localhost,
+    bounca_db_name: bouncadb,
+    
+    bounca_secret_key: <DJANGO SECRET>,
+    bounca_email_host: localhost,
+    bounca_admin_mail: bounca-admin@<YOURDOMAIN>,
+    bounca_from_mail: no-reply@<YOURDOMAIN>
+  }
+</pre>
+          <p>Ansible will install the database, webserver and so on. The parameters you provide in the playbook are used to instantiate the services. After you created the playbook, you can install BounCA by executing the following commands: </p>
+<pre>
+ansible-galaxy install repleo.bounca -p ./roles
+ansible-playbook install-bounca.yml -i <HOSTNAME_OR_IP>,
+</pre>
+         <p>The first collects the ansible roles from Ansible's galaxy. The second command installs the actual BounCA system.</p>
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-md-9" role="main">
+          <h2>Docker Deployment</h2>
+          <p>If you want to try BounCA or you want to create a couple of self-signed certificates without having a persistent CA, the Docker deployment is the fastest way of getting BounCA.</P>
+          <p>Docker offers the ability to run BounCA as an application on your local machine by running a single command.</p>
+          <p>Make sure you have installed Docker including <code>docker-compose</code> and <code>docker-machine</code>. Clone the BounCA docker release script from the github repo: <a href="https://github.com/repleo/docker-compose-bounca">https://github.com/repleo/docker-compose-bounca</a>. The only prerequisite is a working Docker installation.</p>
+          <p>Run the bash script <code>launch-bounca.sh</code></p>
+
+      </div>
+   </div>
+   <div class="row">
+       <div class="col-md-9" role="main">
+           <h2>Manual Install</h2>
+           <p>In case you want to customize the installation of BounCA, you can install it manually. BounCA requires the following installed and configured packages:</P>
+           <ul>
+               <li>nginx</li>
+               <li>uwsgi</li>
+               <li>postgresql-9.4</li>
+               <li>python-3.4</li>
+               <li>virtualenv-3.4</li>
+           </ul>
+           <p>Download BounCA from <a href="https://github.com/repleo/bounca/archive/v0.1.0.zip">github</a> and unpack it in your web application directory, for example <code>/srv/www/</code>.</p>
+           <p>Go to the root of your installation and create a virtual environment and install the python packages <code>pip3.4 -r requirements.txt</code>.</p>
+           <p>Create a database and database user in postgresql.</p>
+           <p>Create the BounCA configuration file <code>/etc/bounca/main.ini</code> for the machine specific configuration.</p>
+           <p>It should contain the following parameters:</p>
+<pre>
+[database]
+DATABASE_USER: <value>
+DATABASE_PASSWORD: <value>
+DATABASE_HOST: <value>
+DATABASE_NAME: <value>
+                               
+[secrets]
+SECRET_KEY: <value-django-secret-just-a-random-salt-string>
+                                   
+[email]
+EMAIL_HOST: <value>
+ADMIN_MAIL: <value>
+FROM_MAIL: <value>
+</pre>
+           <p>Replace the <code><value></code> placeholder with the right values for your installation</p>
+           <p>Next step is to collect the static files: <code>python3 manage.py collectstatic --noinput</code></p>
+           <p>and create the database: <code>python3 manage.py migrate --noinput</code></p>
+           <p>The last step is to configure uWSGI and NGINX. The uWSGI config might look like the following example:</p>
+<pre>
+[uwsgi]
+thread=4
+master=1
+processes=80
+vacuum=true
+uid = www-data
+gid = www-data
+chmod-socket = 700
+chown-socket = www-data
+socket = /run/uwsgi/app/bounca/socket
+logto = /var/log/uwsgi/bounca/log
+chdir = /srv/www/bounca
+home  = /srv/www/bounca/env
+module = bounca.wsgi
+</pre>
+           <p>The NGINX config should contain a proxypass on the root and a location for the static files. For example the following server block:</p>
+<pre>
+server {
+    
+    listen 80;
+    server_name example.org;
+    charset utf-8;
+    
+    location /static {
+    root /srv/www/bounca/media;
+    include mime.types;
+    }
+    
+    location / {
+    include uwsgi_params;
+    uwsgi_read_timeout 9600;
+    uwsgi_send_timeout 9600;
+    uwsgi_pass unix://run/uwsgi/app/bounca/socket;
+    }
+    
+}
+</pre>
+            <p>You should restart uWSGI and NGINX to load the changes. BounCA should be up and running.</p>
+       </div>
+   </div>
+
+   <div class="row">
+      <div class="col-md-9" role="main">
+        <h2>Post Installation</h2>
+        <p>When the installation is finished, you can reach your BounCA installation by browsing to your BounCA machine. You will see a login screen, please create an account an login.</p>
+        <p>You are ready to create your Certificate Authorities!</P>
+      </div>
+   </div>
+</div>
+                                                        
+                                                       
+
+<footer class="bs-docs-footer" role="contentinfo">
+    <div class="container">
+        <ul class="bs-docs-footer-links">
+            <li><a href="https://github.com/repleo/bounca" target="_blank">GitHub</a></li>
+            <li><a href="https://twitter.com/gobounca" target="_blank">Twitter</a></li>
+            <li><a href="/">Home</a></li>
+
+            <li><a href="mailto:jeroen@bounca.org">Contribute?</a></li>
+        </ul>
+        <p>Designed and built by <a href="https://twitter.com/repleo_sw" target="_blank">@repleo</a>.</p>
+        <p>Code licensed <a rel="license" href="https://github.com/repleo/bounca/blob/master/LICENSE" target="_blank">Apache 2.0</a>, docs <a rel="license" href="https://creativecommons.org/licenses/by/3.0/" target="_blank">CC BY 3.0</a>.</p>
+    </div>
+</footer>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  </body>
+</html>
+
