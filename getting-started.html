@@ -101,25 +101,25 @@
 
 <pre>
 - hosts: all
-remote_user: root
-roles:
-- { role: repleo.bounca,
-bounca_timezone: /usr/share/zoneinfo/Europe/Amsterdam,
-bounca_db_user: bounca,
-bounca_db_password: <YOUR DB PASSWORD>,
-    bounca_db_host: localhost,
-    bounca_db_name: bouncadb,
-    
-    bounca_secret_key: <DJANGO SECRET>,
-    bounca_email_host: localhost,
-    bounca_admin_mail: bounca-admin@<YOURDOMAIN>,
-    bounca_from_mail: no-reply@<YOURDOMAIN>
-  }
+  remote_user: root
+  roles:
+  - { role: repleo.bounca,
+      bounca_timezone: /usr/share/zoneinfo/Europe/Amsterdam,
+      bounca_db_user: bounca,
+      bounca_db_password: &lt;YOUR DB PASSWORD&gt;,
+      bounca_db_host: localhost,
+      bounca_db_name: bouncadb,
+
+      bounca_secret_key: &lt;DJANGO SECRET&gt;,
+      bounca_email_host: localhost,
+      bounca_admin_mail: bounca-admin@&lt;YOURDOMAIN&gt;,
+      bounca_from_mail: no-reply@&lt;YOURDOMAIN&gt;
+    }
 </pre>
           <p>Ansible will install the database, webserver and so on. The parameters you provide in the playbook are used to instantiate the services. After you created the playbook, you can install BounCA by executing the following commands: </p>
 <pre>
-ansible-galaxy install repleo.bounca -p ./roles
-ansible-playbook install-bounca.yml -i <HOSTNAME_OR_IP>,
+# ansible-galaxy install repleo.bounca -p ./roles
+# ansible-playbook install-bounca.yml -i &lt;HOSTNAME_OR_IP&gt;,
 </pre>
          <p>The first collects the ansible roles from Ansible's galaxy. The second command installs the actual BounCA system.</p>
       </div>
@@ -131,7 +131,11 @@ ansible-playbook install-bounca.yml -i <HOSTNAME_OR_IP>,
           <p>Docker offers the ability to run BounCA as an application on your local machine by running a single command.</p>
           <p>Make sure you have installed Docker including <code>docker-compose</code> and <code>docker-machine</code>. Clone the BounCA docker release script from the github repo: <a href="https://github.com/repleo/docker-compose-bounca">https://github.com/repleo/docker-compose-bounca</a>. The only prerequisite is a working Docker installation.</p>
           <p>Run the bash script <code>launch-bounca.sh</code></p>
-
+<pre>
+# git clone git@github.com:repleo/docker-compose-bounca.git
+# cd docker-compose-bounca
+# ./launch-bounca.sh
+</pre>
       </div>
    </div>
    <div class="row">
@@ -152,20 +156,20 @@ ansible-playbook install-bounca.yml -i <HOSTNAME_OR_IP>,
            <p>It should contain the following parameters:</p>
 <pre>
 [database]
-DATABASE_USER: <value>
-DATABASE_PASSWORD: <value>
-DATABASE_HOST: <value>
-DATABASE_NAME: <value>
+DATABASE_USER: &lt;value&gt;
+DATABASE_PASSWORD: &lt;value&gt;
+DATABASE_HOST: &lt;value&gt;
+DATABASE_NAME: &lt;value&gt;
                                
 [secrets]
-SECRET_KEY: <value-django-secret-just-a-random-salt-string>
+SECRET_KEY: &lt;value-django-secret-just-a-random-salt-string&gt;
                                    
 [email]
-EMAIL_HOST: <value>
-ADMIN_MAIL: <value>
-FROM_MAIL: <value>
+EMAIL_HOST: &lt;value&gt;
+ADMIN_MAIL: &lt;value&gt;
+FROM_MAIL: &lt;value&gt;
 </pre>
-           <p>Replace the <code><value></code> placeholder with the right values for your installation</p>
+           <p>Replace the <code>&lt;value&gt;</code> placeholder with the right values for your installation</p>
            <p>Next step is to collect the static files: <code>python3 manage.py collectstatic --noinput</code></p>
            <p>and create the database: <code>python3 manage.py migrate --noinput</code></p>
            <p>The last step is to configure uWSGI and NGINX. The uWSGI config might look like the following example:</p>
