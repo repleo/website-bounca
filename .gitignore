@@ -1,0 +1,9 @@
+env/
+.settings
+old/
+build/
+
+
+.pydevproject
+
+.project
