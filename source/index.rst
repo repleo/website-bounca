@@ -1,11 +1,9 @@
 :launchpage: 
 
 
-BounCA
-======
+Site structure
+==============
 
-
-See for more information:
 
 .. _install-docs:
 
@@ -24,6 +22,7 @@ See for more information:
    :caption: Tutorials
    
    tutorials/create_certificate_authority
+   tutorials/install_root_certificate
    tutorials/create_server_certificate_webserver
 
 
