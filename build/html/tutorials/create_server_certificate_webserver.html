@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Create Self-Signed Server Certificate &mdash; BounCA.org generate self-signed SSL certificates</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bounca.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/site.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="BounCA.org generate self-signed SSL certificates" href="../index.html" />
+    <link rel="prev" title="Install self-generated root certificate authorities" href="install_root_certificate.html" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface.">
+    <meta name=keywords content="OpenSSL, PKI, X509, SSL, PKCS12, PEM, Certificate, Key, Root Authority, Certificate Authority, Security, Encryption, Authorisation, Authentications">
+    <meta name="author" content="Repleo, Jeroen Arnoldus <jeroen@repleo.nl>">
+    
+    <meta itemprop="name" content="BounCA.org - Self-signed SSL Key Generation and Management Made Easy">
+    <meta itemprop="description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface.">
+    <meta itemprop="image" content="https://www.bounca.org/_images/BounCA-logo.png">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" value="summary">
+    <meta name="twitter:site" content="@gobounca">
+    <meta name="twitter:creator" content="@repleo_sw">
+    <meta name="twitter:image" content="https://www.bounca.org/_images/BounCA-logo.png">
+    <meta name="twitter:title" content="BounCA.org - Self-signed SSL Key Generation and Management Made Easy">
+    <meta name="twitter:description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface.">
+
+<!-- Open Graph data -->
+    <meta property="og:title" content="BounCA.org - Self-signed SSL Key Generation and Management Made Easy" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.bounca.org" />
+    <meta property="og:image" content="https://www.bounca.org/_images/BounCA-logo.png" />
+    <meta property="og:description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface." />
+    <meta property="og:site_name" content="BounCA" />
+   
+  
+    
+
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <link rel="apple-touch-icon" sizes="57x57" href="_images/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="_images/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="_images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="_images/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="_images/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="_images/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="_images/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="_images/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="_images/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="_images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="_images/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="_images/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="_images/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="_images/manifest.json">
+    <link rel="mask-icon" href="_images/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="_images/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="_images/mstile-144x144.png">
+    <meta name="msapplication-config" content="_images/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head>
+  <body role="document">
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v2.6";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+      <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+           var u="//piwik.repleo.nl/";
+           _paq.push(['setTrackerUrl', u+'piwik.php']);
+           _paq.push(['setSiteId', 12]);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+           })();
+          </script>
+      <noscript><p><img src="//piwik.repleo.nl/piwik.php?idsite=12" style="border:0;" alt="" /></p></noscript>
+
+
+<main class="bs-docs-header" id="content" role="main" tabindex="-1">
+    <div class="container">
+        <h1>Self-Signed Server Certificate</h1>
+        <p>Step-by-step guide how to generate and install a self-signed SSL certificate.</p>
+    </div>
+</main>
+
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          BounCA</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Index <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Download BounCA</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="create_certificate_authority.html">Create Root Certificate Authority</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_root_certificate.html">Install self-generated root certificate authorities</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Create Self-Signed Server Certificate</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Sections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Create Self-Signed Server Certificate</a><ul>
+<li><a class="reference internal" href="#generate-server-certificate">Generate Server Certificate</a></li>
+<li><a class="reference internal" href="#install-the-ssl-key-on-a-nginx-webserver">Install the SSL key on a nginx webserver</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="install_root_certificate.html" title="Previous Chapter: Install self-generated root certificate authorities"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Install self-...</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="create-self-signed-server-certificate">
+<h1>Create Self-Signed Server Certificate</h1>
+<p>This document will show you can generate a server certificate with BounCA.
+We assume you have a working BounCA and create a certificate authority.</p>
+<hr class="docutils" />
+<div class="section" id="generate-server-certificate">
+<h2>Generate Server Certificate</h2>
+<p>You can use a server certificate to configure secure and trusted connections, such as HTTPS, but also SMTP, IMAP etcetera.</p>
+<p>Enter the dashboard of your intermediate CA which must sign your server certificate.</p>
+<div class="align-center figure" id="id1">
+<a class="reference internal image-reference" href="../_images/12-enter-intermediate-ca.png"><img alt="Step into intermediate certificate" src="../_images/12-enter-intermediate-ca.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Step into intermediate certificate</span></p>
+</div>
+<p>Click on the blue <em>server</em> button to add a new server certificate, and a form will be shown.
+For server certificates, the <em>Common Name</em> must be a fully qualified domain name (eg, <code class="docutils literal"><span class="pre">www.example.com</span></code>).
+Note that the <em>Common Name</em> cannot be the same as either your root or intermediate certificate.</p>
+<p>Certificates are usually given a validity of one year, though a CA will typically give a few days extra for convenience.
+Our root and intermediate pairs are 4096 bits. Server and client certificates normally expire after one year, so we can safely use 2048 bits instead.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Although 4096 bits is slightly more secure than 2048 bits, it slows down TLS handshakes and significantly increases processor load during handshakes.
+For this reason, most websites use 2048-bit pairs.</p>
+</div>
+<div class="align-center figure" id="id2">
+<a class="reference internal image-reference" href="../_images/13-create-ssl-server-certificate.png"><img alt="Create SSL server certificate" src="../_images/13-create-ssl-server-certificate.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Create SSL server certificate</span></p>
+</div>
+<p>You can use the certificate for multiple domains using the subject alternative names fields of the X.509v3 extensions.
+Provide all valid domains as a comma separated list to the subject alternative names field.</p>
+<p>You need to provide the passphrase of the intermediate certificate to sign the key of your server certificate.
+It is not necessary to provide a passphrase for the server certificate self. If you install the certificate on a server, having a passphrase on the server key will block automatic restart.</p>
+<div class="align-center figure" id="id3">
+<a class="reference internal image-reference" href="../_images/14-enter-subject-alternative-names.png"><img alt="Enter subject alternative names" src="../_images/14-enter-subject-alternative-names.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Enter subject alternative names</span></p>
+</div>
+<p>The server certificate will be generate. You might inspect the new certificate.
+The <em>Issuer</em> is the intermediate CA. The <em>Subject</em> refers to the certificate itself.</p>
+<div class="align-center figure" id="id4">
+<a class="reference internal image-reference" href="../_images/15-inspect-server-certificate.png"><img alt="Inspect server certificate" src="../_images/15-inspect-server-certificate.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Inspect server certificate</span></p>
+</div>
+<p>You can also see the subject alt names in the <em>X509v3 extensions</em> section of the certificate.</p>
+<div class="align-center figure" id="id5">
+<a class="reference internal image-reference" href="../_images/16-inspect-server-certificate-crl-ocsp.png"><img alt="Inspect CRL and OCSP revocation links" src="../_images/16-inspect-server-certificate-crl-ocsp.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Inspect CRL and OCSP revocation links</span></p>
+</div>
+</div>
+<div class="section" id="install-the-ssl-key-on-a-nginx-webserver">
+<h2>Install the SSL key on a nginx webserver</h2>
+<p>This guide shows you in a couple of steps how to install the generated SSL certificate on NGINX to provide HTTPS access to your webserver.
+First, you can download a packaged key and certificate zip from BounCA.</p>
+<div class="align-center figure" id="id6">
+<a class="reference internal image-reference" href="../_images/17-ssl-certificate-generated-download.png"><img alt="Download SSL certificate zip package" src="../_images/17-ssl-certificate-generated-download.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Download SSL certificate zip package</span></p>
+</div>
+<p>The zip package contains multiple files:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">rootca.pem</span></code>: The root authority certificate</li>
+<li><code class="docutils literal"><span class="pre">&lt;domain&gt;.key</span></code>: The key of your certificate</li>
+<li><code class="docutils literal"><span class="pre">&lt;domain&gt;.pem</span></code>: The certificate file</li>
+<li><code class="docutils literal"><span class="pre">&lt;domain&gt;.csr</span></code>: The sign request of the certificate</li>
+<li><code class="docutils literal"><span class="pre">&lt;domain&gt;-chain.pem</span></code>: The certificate including its complete root chain</li>
+<li><code class="docutils literal"><span class="pre">&lt;domain&gt;.p12</span></code>: A PKCS12 keystore containing the key and certificate</li>
+</ul>
+<div class="align-center figure" id="id7">
+<a class="reference internal image-reference" href="../_images/18-ssl-certificate-zip-package.png"><img alt="Content of the SSL certificate zip package" src="../_images/18-ssl-certificate-zip-package.png" style="height: 350px;" /></a>
+<p class="caption"><span class="caption-text">Content of the SSL certificate zip package</span></p>
+</div>
+<p>We assume you have added the root ca to your trusted certificates.
+If you open the chain.pem you can check the trusted chain.</p>
+<p>To enable SSL within nginx you should copy <code class="docutils literal"><span class="pre">&lt;domain&gt;-chain.pem</span></code> and <code class="docutils literal"><span class="pre">&lt;domain&gt;.key</span></code> to your nginx SSL folder.
+Make sure you set the access rights:
+- <code class="docutils literal"><span class="pre">&lt;domain&gt;-chain.pem</span></code>: 0x644 for nginx user
+- <code class="docutils literal"><span class="pre">&lt;domain&gt;.key</span></code>: 0x400 for nginx user</p>
+<p>Add the following server block to your nginx server:</p>
+<div class="highlight-nginx"><div class="highlight"><pre><span></span><span class="k">server</span> <span class="p">{</span>
+       <span class="kn">listen</span>       <span class="mi">443</span> <span class="s">ssl</span><span class="p">;</span>
+       <span class="kn">server_name</span>  <span class="s">localhost</span><span class="p">;</span>
+
+       <span class="kn">ssl_certificate</span>      <span class="s">ssl/&lt;domain&gt;-chain.pem</span><span class="p">;</span>
+       <span class="kn">ssl_certificate_key</span>  <span class="s">ssl/&lt;domain&gt;.key</span><span class="p">;</span>
+
+       <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+               <span class="kn">root</span>   <span class="s">html</span><span class="p">;</span>
+               <span class="kn">index</span>  <span class="s">index.html</span> <span class="s">index.htm</span><span class="p">;</span>
+       <span class="p">}</span>
+
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It specifies that the server should listen to port 443, using SSL and it defines where it can find the key/certificate pair.</p>
+<p>Restart the server and visit your website. It should show a valid and trusted HTTPS connection, and you will see the lock in the URL bar of the browser.</p>
+<div class="align-center figure" id="id8">
+<a class="reference internal image-reference" href="../_images/27-self-signed-certificate-is-valid.png"><img alt="Verify self-signed certificate is now trusted" src="../_images/27-self-signed-certificate-is-valid.png" style="height: 350px;" /></a>
+<p class="caption"><span class="caption-text">Verify self-signed certificate is now trusted</span></p>
+</div>
+<p>When you click on the lock, you will see that the SSL connection is trusted using your personal self-signed certificate and root authority.</p>
+<div class="align-center figure" id="id9">
+<a class="reference internal image-reference" href="../_images/28-visit-website-trusted-ssl-connection-https.png"><img alt="Verify HTTPS connection is now valid and trusted" src="../_images/28-visit-website-trusted-ssl-connection-https.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Verify HTTPS connection is now valid and trusted</span></p>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<style media="screen" type="text/css">
+  .fb_iframe_widget span {
+      vertical-align: baseline !important;
+  }
+</style>
+<footer class="bs-docs-footer" role="contentinfo">
+    <div class="container">
+        <p class="pull-right">
+              <a href="#">Back to top</a>
+              
+        </p>
+        <ul class="bs-docs-footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="https://github.com/repleo/bounca" target="_blank">GitHub</a></li>
+            <li><a href="https://twitter.com/gobounca" target="_blank">Twitter</a></li>
+            <li><a href="/docs/index.html">Docs</a></li>
+            <li><a href="mailto:jeroen@bounca.org">Contribute?</a></li>
+        </ul>
+        <ul class="bs-docs-footer-links">
+            <li>Share on:</li>
+            <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="gobounca">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+            <li><div class="fb-share-button" data-layout="button" data-mobile-iframe="true" style="margin: 0 auto;"></div></li>
+
+            <li><div class="g-plus" data-action="share" data-annotation="none"></div></li>
+        </ul>
+        <p>Designed and built by <a href="https://twitter.com/repleo_sw" target="_blank">@repleo</a>.</p>
+        <p>Code licensed <a rel="license" href="https://github.com/repleo/bounca/blob/master/LICENSE" target="_blank">Apache 2.0</a>, docs <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.</p>
+		<p>
+		      Last updated on Jun 28, 2016.<br/>
+		</p>
+    </div>
+</footer>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- tumblr-ad -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+          data-ad-client="ca-pub-2021303705454992"
+               data-ad-slot="6971924867"></ins>
+               <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+               </script>
+
+  </body>
+</html>

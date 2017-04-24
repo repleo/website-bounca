@@ -1,0 +1,433 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Create Root Certificate Authority &mdash; BounCA.org generate self-signed SSL certificates</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bounca.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/site.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="BounCA.org generate self-signed SSL certificates" href="../index.html" />
+    <link rel="next" title="Install self-generated root certificate authorities" href="install_root_certificate.html" />
+    <link rel="prev" title="Download BounCA" href="../getting_started.html" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface.">
+    <meta name=keywords content="OpenSSL, PKI, X509, SSL, PKCS12, PEM, Certificate, Key, Root Authority, Certificate Authority, Security, Encryption, Authorisation, Authentications">
+    <meta name="author" content="Repleo, Jeroen Arnoldus <jeroen@repleo.nl>">
+    
+    <meta itemprop="name" content="BounCA.org - Self-signed SSL Key Generation and Management Made Easy">
+    <meta itemprop="description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface.">
+    <meta itemprop="image" content="https://www.bounca.org/_images/BounCA-logo.png">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" value="summary">
+    <meta name="twitter:site" content="@gobounca">
+    <meta name="twitter:creator" content="@repleo_sw">
+    <meta name="twitter:image" content="https://www.bounca.org/_images/BounCA-logo.png">
+    <meta name="twitter:title" content="BounCA.org - Self-signed SSL Key Generation and Management Made Easy">
+    <meta name="twitter:description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface.">
+
+<!-- Open Graph data -->
+    <meta property="og:title" content="BounCA.org - Self-signed SSL Key Generation and Management Made Easy" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.bounca.org" />
+    <meta property="og:image" content="https://www.bounca.org/_images/BounCA-logo.png" />
+    <meta property="og:description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface." />
+    <meta property="og:site_name" content="BounCA" />
+   
+  
+    
+
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <link rel="apple-touch-icon" sizes="57x57" href="_images/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="_images/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="_images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="_images/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="_images/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="_images/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="_images/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="_images/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="_images/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="_images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="_images/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="_images/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="_images/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="_images/manifest.json">
+    <link rel="mask-icon" href="_images/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="_images/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="_images/mstile-144x144.png">
+    <meta name="msapplication-config" content="_images/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head>
+  <body role="document">
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v2.6";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+      <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+           var u="//piwik.repleo.nl/";
+           _paq.push(['setTrackerUrl', u+'piwik.php']);
+           _paq.push(['setSiteId', 12]);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+           })();
+          </script>
+      <noscript><p><img src="//piwik.repleo.nl/piwik.php?idsite=12" style="border:0;" alt="" /></p></noscript>
+
+
+<main class="bs-docs-header" id="content" role="main" tabindex="-1">
+    <div class="container">
+        <h1>Set-up Root Certificate Authority</h1>
+        <p>Step-by-step guide how to generate a basic root certificate authority.</p>
+    </div>
+</main>
+
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          BounCA</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Index <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Download BounCA</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Create Root Certificate Authority</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install_root_certificate.html">Install self-generated root certificate authorities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_server_certificate_webserver.html">Create Self-Signed Server Certificate</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Sections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Create Root Certificate Authority</a><ul>
+<li><a class="reference internal" href="#generate-root-certificate">Generate Root Certificate</a></li>
+<li><a class="reference internal" href="#install-your-root-certificate-authority">Install your root certificate authority</a><ul>
+<li><a class="reference internal" href="#mac-os-x">Mac OS X</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#generate-the-intermediate-certificate-authority">Generate the intermediate certificate authority</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="../getting_started.html" title="Previous Chapter: Download BounCA"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Download BounCA</span>
+    </a>
+  </li>
+  <li>
+    <a href="install_root_certificate.html" title="Next Chapter: Install self-generated root certificate authorities"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Install self-... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="create-root-certificate-authority">
+<h1>Create Root Certificate Authority</h1>
+<p>This document will show you how to set up a root certificate authority with BounCA.
+We assume you have just installed BounCA, created an account, and are logged in on the desktop.</p>
+<hr class="docutils" />
+<div class="section" id="generate-root-certificate">
+<h2>Generate Root Certificate</h2>
+<p>Acting as a certificate authority (CA) means dealing with cryptographic pairs of private keys and public certificates.
+The very first cryptographic pair we will create is the root pair.
+This consists of the root key (<code class="docutils literal"><span class="pre">ca.key.pem</span></code>) and root certificate (<code class="docutils literal"><span class="pre">ca.cert.pem</span></code>).
+This pair forms the identity of your CA.
+Within BounCA the key will not available in the web user interface, the root certificate is available after you have generated the pair for installation on clients.</p>
+<p>Typically, the root CA does not sign server or client certificates directly.
+The root CA is only ever used to create one or more intermediate certificate authorities, which are trusted by the root CA to sign certificates on their behalf.
+This is best practice.
+It allows the root key to be kept offline and unused as much as possible, as any compromise of the root key is disastrous.</p>
+<p>When you login to your fresh BounCA installation, you will see an empty dashboard.
+You should first generate a root certificate, please push the <em>tower</em> button.</p>
+<div class="align-center figure" id="id1">
+<a class="reference internal image-reference" href="../_images/1-empty-root-dashboard.png"><img alt="Empty root dashboard" src="../_images/1-empty-root-dashboard.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Start screen of BounCA without a root authority</span></p>
+</div>
+<p>After clicking on the <em>tower</em> button a new modal view will appear. Please enter the details of your Root Certificate. Most important is the common name, which should be unique in your key setup. Also make sure the company info is correct, as you cannot edit it aftwards. Also configure your OCSP and CRL usrl for the revocation services.</p>
+<p>Give the root certificate a long expiry date, such as twenty years. Once the root certificate expires, all certificates signed by the CA become invalid.</p>
+<div class="align-center figure" id="id2">
+<a class="reference internal image-reference" href="../_images/2-create-root-certificate.png"><img alt="Create root certificate" src="../_images/2-create-root-certificate.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Create root certificate</span></p>
+</div>
+<p>You will see the passphrases when you scroll down. Create a passphrase for accessing your key. Remember your passphrase or store it in a realy save place like a safe.</p>
+<p>The root key will be encrypted by BounCA with AES 256-bit encryption and use a strong passphrase to protect it as it is the core of your trust chain.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">BounCA uses 4096 bits for all root and intermediate certificate authority keys.</p>
+</div>
+<div class="align-center figure" id="id3">
+<a class="reference internal image-reference" href="../_images/3-enter-passphrase-root-ca.png"><img alt="Enter passphrase of root certificate" src="../_images/3-enter-passphrase-root-ca.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Enter passphrase of root certificate</span></p>
+</div>
+<p>Your CA certificate will be generated if all date is complete and correct.</p>
+<div class="align-center figure" id="id4">
+<a class="reference internal image-reference" href="../_images/4-root-certificate-generated.png"><img alt="Root certificate generated" src="../_images/4-root-certificate-generated.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Root certificate for authority generated</span></p>
+</div>
+<p>You can check the subject and data of the certifcate by clicking on the info button.</p>
+<p>The output shows:</p>
+<ul class="simple">
+<li>the <code class="docutils literal"><span class="pre">Signature</span> <span class="pre">Algorithm</span></code> used</li>
+<li>the dates of certificate <code class="docutils literal"><span class="pre">Validity</span></code></li>
+<li>the <code class="docutils literal"><span class="pre">Public-Key</span></code> bit length</li>
+<li>the <code class="docutils literal"><span class="pre">Issuer</span></code>, which is the entity that signed the certificate</li>
+<li>the <code class="docutils literal"><span class="pre">Subject</span></code>, which refers to the certificate itself</li>
+</ul>
+<p>The <code class="docutils literal"><span class="pre">Issuer</span></code> and <code class="docutils literal"><span class="pre">Subject</span></code> are identical as the certificate is self-signed.
+Note that all root certificates are self-signed.</p>
+<div class="align-center figure" id="id5">
+<a class="reference internal image-reference" href="../_images/5-inspect-root-certificate.png"><img alt="Inspect root certificate" src="../_images/5-inspect-root-certificate.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Inspect root certificate</span></p>
+</div>
+<p>And you can check if the OCSP and/or CRL links are avaiable in the X.509v3 fields of the certificate.
+The output also shows the <em>X509v3 extensions</em> as we applied them.</p>
+<div class="align-center figure" id="id6">
+<a class="reference internal image-reference" href="../_images/6-inspect-root-certificate-revoke-crl.png"><img alt="Inspect revocation services CRL and OCSP links in certificate" src="../_images/6-inspect-root-certificate-revoke-crl.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Inspect revocation services CRL and OCSP links in certificate</span></p>
+</div>
+</div>
+<div class="section" id="install-your-root-certificate-authority">
+<h2>Install your root certificate authority</h2>
+<p>You can download the root certificate PEM by clicking on the <code class="docutils literal"><span class="pre">download</span></code> button.
+The PEM file can be used to add your root authority to the trust library of your operating system</p>
+<div class="section" id="mac-os-x">
+<h3>Mac OS X</h3>
+<p>Double click on the downloaded PEM. The key manager programm will start and it will show you the certificate.
+Check the validity of the certificate.</p>
+<div class="align-center figure" id="id7">
+<a class="reference internal image-reference" href="../_images/20-install-root-pem-certificate.png"><img alt="Install root CA pem file OS X" src="../_images/20-install-root-pem-certificate.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Install root CA pem file on OS X</span></p>
+</div>
+<div class="align-center figure" id="id8">
+<a class="reference internal image-reference" href="../_images/21-validate-root-ca-pem.png"><img alt="Validate root CA pem on OS X" src="../_images/21-validate-root-ca-pem.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Validate root CA PEM on OS X</span></p>
+</div>
+<p>In case you trust the certificate you can add it to your operating system. Add it on system level, OS X will ask for your administrator password.
+When you have added the certificate to your trust chain, OS X will trust the root CA&#8217;s signed certificates.</p>
+<div class="align-center figure" id="id9">
+<a class="reference internal image-reference" href="../_images/22-add-root-ca-pem.png"><img alt="Add root CA pem to OS X" src="../_images/22-add-root-ca-pem.png" style="height: 350px;" /></a>
+<p class="caption"><span class="caption-text">Add root CA PEM to OS X</span></p>
+</div>
+<p>Enter your administator password.</p>
+<div class="align-center figure" id="id10">
+<a class="reference internal image-reference" href="../_images/23-enter-password.png"><img alt="Enter administrator password" src="../_images/23-enter-password.png" style="height: 350px;" /></a>
+<p class="caption"><span class="caption-text">Enter your administrator password</span></p>
+</div>
+<p>Add the root authority pem as trusted root certificate to your system.</p>
+<div class="align-center figure" id="id11">
+<a class="reference internal image-reference" href="../_images/24-trust-self-signed-root-ca-pem.png"><img alt="Trust added root authority pem" src="../_images/24-trust-self-signed-root-ca-pem.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Trust added root authority PEM</span></p>
+</div>
+<p>Enable system-wide trust of your root certificate</p>
+<div class="align-center figure" id="id12">
+<a class="reference internal image-reference" href="../_images/25-trust-rules-enabled.png"><img alt="Trust rules enabled" src="../_images/25-trust-rules-enabled.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Trust rules enabled</span></p>
+</div>
+<p>Re-open the root PEM certificate in the key manager. You will notice it is now trusted by OS X.</p>
+<div class="align-center figure" id="id13">
+<a class="reference internal image-reference" href="../_images/26-root-ca-is-trusted.png"><img alt="Verify root CA has been trusted" src="../_images/26-root-ca-is-trusted.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Verify root CA has been trusted</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="generate-the-intermediate-certificate-authority">
+<h2>Generate the intermediate certificate authority</h2>
+<p>An intermediate certificate authority (CA) is an entity that can sign certificates on behalf of the root CA.
+The root CA signs the intermediate certificate, forming a chain of trust.</p>
+<p>The purpose of using an intermediate CA is primarily for security.
+The root key can be kept offline and used as infrequently as possible.
+If the intermediate key is compromised, the root CA can revoke the intermediate certificate and create a new intermediate cryptographic pair.</p>
+<p>Enter the root CA view in BounCA by clicking on the blue <code class="docutils literal"><span class="pre">edit</span></code> button or by clicking on the shortname of the root certificate.
+You will enter a screen with an empty table.</p>
+<div class="align-center figure" id="id14">
+<a class="reference internal image-reference" href="../_images/7-enter-root-ca.png"><img alt="Use root certificate as context" src="../_images/7-enter-root-ca.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Use root certificate as context</span></p>
+</div>
+<p>Click on the yellow add intermediate root certificate button. You will get a form where you can fill in the details of your intermediate CA.
+Give the intermediate CA a common name which distinguish from the root certificate.
+You will not be able to edit all the fields, as they must be the same as of your root authority.</p>
+<p>The intermediate certificate should be valid for a shorter period than the root certificate.
+Ten years would be reasonable.</p>
+<div class="align-center figure" id="id15">
+<a class="reference internal image-reference" href="../_images/8-generate-intermediate-certificate.png"><img alt="Generate intermediate certificate authority" src="../_images/8-generate-intermediate-certificate.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Generate intermediate certificate authority</span></p>
+</div>
+<p>Enter the passphrase of the root certificate to be able to sign the intermediate certificate and enter the passphrase of the certificate self.
+Use again a strong passphrase to protect your intermediate certificate.</p>
+<div class="align-center figure" id="id16">
+<a class="reference internal image-reference" href="../_images/9-generate-intermediate-certificate-enter-passphrases.png"><img alt="Enter passphrases for generating intermediate certificate" src="../_images/9-generate-intermediate-certificate-enter-passphrases.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Enter passphrases for generating intermediate certificate</span></p>
+</div>
+<p>The intermediate certificate will be generated and you can inspect its subject by clicking on the <code class="docutils literal"><span class="pre">info</span></code> button.</p>
+<div class="align-center figure" id="id17">
+<a class="reference internal image-reference" href="../_images/10-inspect-intermediate-certificate.png"><img alt="Inspect intermediate certificate authority" src="../_images/10-inspect-intermediate-certificate.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Inspect intermediate certificate authority</span></p>
+</div>
+<p>The CRL and OCSP urls are automatically assigned to the same as the root certificate, and in case of the CRL url, it refers to the name of your intermediate authority.</p>
+<div class="align-center figure" id="id18">
+<a class="reference internal image-reference" href="../_images/11-inspect-intermediate-certificate-crl-ocsp.png"><img alt="Inspect CRL and OCSP links of intermediate certificate" src="../_images/11-inspect-intermediate-certificate-crl-ocsp.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Inspect CRL and OCSP links of intermediate certificat</span></p>
+</div>
+<p>This guide has shown you how to setup a root certificate authority with BounCA and how to generate an intermediate certificate.
+You can now generate server and client certificates to enable encrypted HTTPS connections and client authorisation.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<style media="screen" type="text/css">
+  .fb_iframe_widget span {
+      vertical-align: baseline !important;
+  }
+</style>
+<footer class="bs-docs-footer" role="contentinfo">
+    <div class="container">
+        <p class="pull-right">
+              <a href="#">Back to top</a>
+              
+        </p>
+        <ul class="bs-docs-footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="https://github.com/repleo/bounca" target="_blank">GitHub</a></li>
+            <li><a href="https://twitter.com/gobounca" target="_blank">Twitter</a></li>
+            <li><a href="/docs/index.html">Docs</a></li>
+            <li><a href="mailto:jeroen@bounca.org">Contribute?</a></li>
+        </ul>
+        <ul class="bs-docs-footer-links">
+            <li>Share on:</li>
+            <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="gobounca">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+            <li><div class="fb-share-button" data-layout="button" data-mobile-iframe="true" style="margin: 0 auto;"></div></li>
+
+            <li><div class="g-plus" data-action="share" data-annotation="none"></div></li>
+        </ul>
+        <p>Designed and built by <a href="https://twitter.com/repleo_sw" target="_blank">@repleo</a>.</p>
+        <p>Code licensed <a rel="license" href="https://github.com/repleo/bounca/blob/master/LICENSE" target="_blank">Apache 2.0</a>, docs <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.</p>
+		<p>
+		      Last updated on Jun 28, 2016.<br/>
+		</p>
+    </div>
+</footer>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- tumblr-ad -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+          data-ad-client="ca-pub-2021303705454992"
+               data-ad-slot="6971924867"></ins>
+               <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+               </script>
+
+  </body>
+</html>

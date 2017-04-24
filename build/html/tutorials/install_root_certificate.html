@@ -1,0 +1,538 @@
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Install self-generated root certificate authorities &mdash; BounCA.org generate self-signed SSL certificates</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.3.6/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bounca.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/site.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="BounCA.org generate self-signed SSL certificates" href="../index.html" />
+    <link rel="next" title="Create Self-Signed Server Certificate" href="create_server_certificate_webserver.html" />
+    <link rel="prev" title="Create Root Certificate Authority" href="create_certificate_authority.html" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface.">
+    <meta name=keywords content="OpenSSL, PKI, X509, SSL, PKCS12, PEM, Certificate, Key, Root Authority, Certificate Authority, Security, Encryption, Authorisation, Authentications">
+    <meta name="author" content="Repleo, Jeroen Arnoldus <jeroen@repleo.nl>">
+    
+    <meta itemprop="name" content="BounCA.org - Self-signed SSL Key Generation and Management Made Easy">
+    <meta itemprop="description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface.">
+    <meta itemprop="image" content="https://www.bounca.org/_images/BounCA-logo.png">
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" value="summary">
+    <meta name="twitter:site" content="@gobounca">
+    <meta name="twitter:creator" content="@repleo_sw">
+    <meta name="twitter:image" content="https://www.bounca.org/_images/BounCA-logo.png">
+    <meta name="twitter:title" content="BounCA.org - Self-signed SSL Key Generation and Management Made Easy">
+    <meta name="twitter:description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface.">
+
+<!-- Open Graph data -->
+    <meta property="og:title" content="BounCA.org - Self-signed SSL Key Generation and Management Made Easy" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://www.bounca.org" />
+    <meta property="og:image" content="https://www.bounca.org/_images/BounCA-logo.png" />
+    <meta property="og:description" content="BounCA is a tool to setup your personal Certificate Authority to generate OpenSSL keys and self-signed certificates in an easy to use web interface." />
+    <meta property="og:site_name" content="BounCA" />
+   
+  
+    
+
+    <!--[if lt IE 9]>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <link rel="apple-touch-icon" sizes="57x57" href="_images/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="_images/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="_images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="_images/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="_images/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="_images/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="_images/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="_images/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="_images/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="_images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="_images/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="_images/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="_images/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="_images/manifest.json">
+    <link rel="mask-icon" href="_images/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="_images/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="_images/mstile-144x144.png">
+    <meta name="msapplication-config" content="_images/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+
+  </head>
+  <body role="document">
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v2.6";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+      <script type="text/javascript">
+          var _paq = _paq || [];
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+           var u="//piwik.repleo.nl/";
+           _paq.push(['setTrackerUrl', u+'piwik.php']);
+           _paq.push(['setSiteId', 12]);
+           var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+           })();
+          </script>
+      <noscript><p><img src="//piwik.repleo.nl/piwik.php?idsite=12" style="border:0;" alt="" /></p></noscript>
+
+
+<main class="bs-docs-header" id="content" role="main" tabindex="-1">
+    <div class="container">
+        <h1>Guide to add self-generated root certificate authorities for 8 operating systems and browsers</h1>
+        <p>Easy installation of self-generated root certificates</p>
+    </div>
+</main>
+
+
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          BounCA</a>
+        <span class="navbar-text navbar-version pull-left"><b></b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Index <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">Download BounCA</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="create_certificate_authority.html">Create Root Certificate Authority</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Install self-generated root certificate authorities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_server_certificate_webserver.html">Create Self-Signed Server Certificate</a></li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Sections <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">Install self-generated root certificate authorities</a><ul>
+<li><a class="reference internal" href="#mac-os-x">Mac OS X</a><ul>
+<li><a class="reference internal" href="#keychain-gui">Keychain GUI</a></li>
+<li><a class="reference internal" href="#id2">Keychain GUI</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#iphone-ipad-ios">iPhone, iPad (IOS)</a></li>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#chrome">Chrome</a></li>
+<li><a class="reference internal" href="#firefox">Firefox</a></li>
+<li><a class="reference internal" href="#linux-ubuntu-debian">Linux Ubuntu/Debian</a></li>
+<li><a class="reference internal" href="#linux-red-hat-centos">Linux Red Hat / CentOS</a><ul>
+<li><a class="reference internal" href="#red-hat-centos-6">Red Hat / CentOS 6</a></li>
+<li><a class="reference internal" href="#red-hat-centos-5">Red Hat / CentOS 5</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#freebsd">FreeBSD</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li>
+    <a href="create_certificate_authority.html" title="Previous Chapter: Create Root Certificate Authority"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Create Root C...</span>
+    </a>
+  </li>
+  <li>
+    <a href="create_server_certificate_webserver.html" title="Next Chapter: Create Self-Signed Server Certificate"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Create Self-S... &raquo;</span>
+    </a>
+  </li>
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="install-self-generated-root-certificate-authorities">
+<h1>Install self-generated root certificate authorities</h1>
+<p>Most operating systems offer the ability to add additional trust rules for self-generated root certificate authorities.
+When the root certificate is trusted by the operating system, the system will accept all its signed certificates.</p>
+<p>This guide shows how to add a root certificate to 8 populair operating systems and browsers.
+Installation is most times easy if you set al the flags right.
+After having trusted the certificate you will see the green lock for your self-signed certificates.</p>
+<p>The prerequisite is that you have downloaded the root certificate file, or made it available via a website.
+The root certificate PEM file is public and you can distribute it to everyone.
+While distributing the certificate make sure you use secured connections and provide the fingerprint via a separate channel so the receiver can verify the root certificate is not intercepted.</p>
+<div class="section" id="mac-os-x">
+<span id="id1"></span><h2>Mac OS X</h2>
+<p>OS X offers the installation of certificates via a gui interface or via the commandline.
+We will discuss both methods. We assume you have stored the root certificate on your file system.</p>
+<div class="section" id="keychain-gui">
+<h3>Keychain GUI</h3>
+<p>Double click on the certificate file. The key manager programm will start and it will show you the certificate.
+Check the validity of the certificate.</p>
+<div class="align-center figure" id="id6">
+<a class="reference internal image-reference" href="../_images/20-install-root-pem-certificate1.png"><img alt="Install root CA pem file OS X" src="../_images/20-install-root-pem-certificate1.png" style="width: 800px;" /></a>
+<p class="caption"><span class="caption-text">Install root CA pem file on OS X</span></p>
+</div>
+<div class="align-center figure" id="id7">
+<a class="reference internal image-reference" href="../_images/21-validate-root-ca-pem1.png"><img alt="Validate root CA pem on OS X" src="../_images/21-validate-root-ca-pem1.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Validate root CA PEM on OS X</span></p>
+</div>
+<p>In case you trust the certificate you can add it to your operating system. Add it on system level, OS X will ask for your administrator password.
+When you have added the certificate to your trust chain, OS X will trust the root CA&#8217;s signed certificates.</p>
+<div class="align-center figure" id="id8">
+<a class="reference internal image-reference" href="../_images/22-add-root-ca-pem1.png"><img alt="Add root CA pem to OS X" src="../_images/22-add-root-ca-pem1.png" style="height: 350px;" /></a>
+<p class="caption"><span class="caption-text">Add root CA PEM to OS X</span></p>
+</div>
+<p>Enter your administator password.</p>
+<div class="align-center figure" id="id9">
+<a class="reference internal image-reference" href="../_images/23-enter-password1.png"><img alt="Enter administrator password" src="../_images/23-enter-password1.png" style="height: 350px;" /></a>
+<p class="caption"><span class="caption-text">Enter your administrator password</span></p>
+</div>
+<p>Add the root authority pem as trusted root certificate to your system.</p>
+<div class="align-center figure" id="id10">
+<a class="reference internal image-reference" href="../_images/24-trust-self-signed-root-ca-pem1.png"><img alt="Trust added root authority pem" src="../_images/24-trust-self-signed-root-ca-pem1.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Trust added root authority PEM</span></p>
+</div>
+<p>Enable system-wide trust of your root certificate</p>
+<div class="align-center figure" id="id11">
+<a class="reference internal image-reference" href="../_images/25-trust-rules-enabled1.png"><img alt="Trust rules enabled" src="../_images/25-trust-rules-enabled1.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Trust rules enabled</span></p>
+</div>
+<p>Re-open the root PEM certificate in the key manager. You will notice it is now trusted by OS X.</p>
+<div class="align-center figure" id="id12">
+<a class="reference internal image-reference" href="../_images/26-root-ca-is-trusted1.png"><img alt="Verify root CA has been trusted" src="../_images/26-root-ca-is-trusted1.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Verify root CA has been trusted</span></p>
+</div>
+</div>
+<div class="section" id="id2">
+<h3>Keychain GUI</h3>
+<p>OS X offers also a command line interface to trust and remove certificates.</p>
+<p>Use the following command to add a certificate:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain &lt;new-root-certificate&gt;
+</pre></div>
+</div>
+<p>Use the following command to remove a certificate</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>sudo security delete-certificate -c <span class="s2">&quot;&lt;name of existing certificate&gt;&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="iphone-ipad-ios">
+<span id="ios"></span><h2>iPhone, iPad (IOS)</h2>
+<p>Installing a certificate on an IOS device, such as the iPhone or iPad, is a couple of a few clicks. To get the certificate on the IOS device, you can either mail the certificate file or provide it via a webserver.
+After you have downloaded the certificate to the IOS device, click on it. It opens the following screen.</p>
+<div class="align-center figure" id="id13">
+<a class="reference internal image-reference" href="../_images/ios_open_certificate.jpg"><img alt="IOS open certificate" src="../_images/ios_open_certificate.jpg" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-text">IOS open certificate</span></p>
+</div>
+<p>After you have validated that the certificate is indeed the one you want to trust, press the install button.</p>
+<div class="align-center figure" id="id14">
+<a class="reference internal image-reference" href="../_images/ios_trust_new_certificate.jpg"><img alt="IOS trust new certificate" src="../_images/ios_trust_new_certificate.jpg" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-text">IOS trust new certificate</span></p>
+</div>
+<p>IOS will show you a warning if you are really sure.
+The reason of the warning is obvious, if you trust a certificate, it will be possible to perform man-in-the-middle attacks using that certificate. So, you want to be really sure it is your root certificate.
+Click on the install and you will see the final screen that the certificate has been trusted.</p>
+<div class="align-center figure" id="id15">
+<a class="reference internal image-reference" href="../_images/ios_certificate_installed.jpg"><img alt="IOS certificate installed" src="../_images/ios_certificate_installed.jpg" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-text">IOS certificate installed</span></p>
+</div>
+</div>
+<div class="section" id="windows">
+<span id="id3"></span><h2>Windows</h2>
+<p>Make sure you have the <code class="docutils literal"><span class="pre">Administrator</span></code> role or group membership.</p>
+<p>You need to perform the following steps to add certificates to the <em>Trusted Root Certification Authorities</em> store for a local computer:</p>
+<ol class="arabic simple">
+<li>Click <em>Start</em>, click <em>Start Search</em>, type <code class="docutils literal"><span class="pre">mmc</span></code>, and then press <em>ENTER</em>.</li>
+<li>On the <em>File</em> menu, click <em>Add/Remove Snap-in</em>.</li>
+<li>Under <em>Available snap-ins</em>, click <em>Certificates</em>, and then click <em>Add</em>.</li>
+<li>Under <em>This snap-in will always manage certificates for</em>, click <em>Computer account</em>, and then click <em>Next</em>.</li>
+<li>Click <em>Local computer</em>, and click <em>Finish</em>.</li>
+<li>If you have no more snap-ins to add to the console, click <em>OK</em>.</li>
+<li>In the console tree, double-click <em>Certificates</em>.</li>
+<li>Right-click the <em>Trusted Root Certification Authorities</em> store.</li>
+<li>Click <em>Import</em> to import the certificates and follow the steps in the <em>Certificate Import Wizard</em>.</li>
+</ol>
+<p>After these steps, validate that your root certificate has been added by visiting a site using a signed certificate or your root CA.</p>
+</div>
+<div class="section" id="chrome">
+<span id="browser-chrome"></span><h2>Chrome</h2>
+<p>Depending on the operating system, Chrome is using the system wide certificates or the certificates of its own scope.
+In case it uses its own certificates you can add a root certificate to chrome by executing the following steps.</p>
+<p>Open the browser and go to the settings page.</p>
+<div class="align-center figure" id="id16">
+<a class="reference internal image-reference" href="../_images/1_chrome_open_settings.png"><img alt="Chrome open settings page" src="../_images/1_chrome_open_settings.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Chrome open settings page</span></p>
+</div>
+<p>Go to the advanced settings page, and click on the certificates view.</p>
+<div class="align-center figure" id="id17">
+<a class="reference internal image-reference" href="../_images/2_chrome_click_on_advanced_settings_and_go_to_certificates.png"><img alt="Chrome click on advanced settings and go to certificates" src="../_images/2_chrome_click_on_advanced_settings_and_go_to_certificates.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Chrome click on advanced settings and go to certificates</span></p>
+</div>
+<p>Within the certificates, you need to add the certificate as an authority. Go to the right tab and click the import button.</p>
+<div class="align-center figure" id="id18">
+<a class="reference internal image-reference" href="../_images/3_chrome_click_on_authorities_and_press_import_button.png"><img alt="Chrome click on authorities and press import button" src="../_images/3_chrome_click_on_authorities_and_press_import_button.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Chrome click on authorities and press import button</span></p>
+</div>
+<p>Select the root certificate as generated by BounCA.</p>
+<div class="align-center figure" id="id19">
+<a class="reference internal image-reference" href="../_images/4_chrome_select_the_root_certificate_file.png"><img alt="Chrome select the root certificate file" src="../_images/4_chrome_select_the_root_certificate_file.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Chrome select the root certificate file</span></p>
+</div>
+<p>Add the certificate and select the trust levels of it.</p>
+<div class="align-center figure" id="id20">
+<a class="reference internal image-reference" href="../_images/5_chrome_add_the_certificate_and_select_trust_rules.png"><img alt="Chrome add the certificate and select trust rules" src="../_images/5_chrome_add_the_certificate_and_select_trust_rules.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Chrome add the certificate and select trust rules</span></p>
+</div>
+<p>After clicking <strong>OK</strong>, you will notice the root authority has been added to the authorities list. This means that all certificates signed by this root CA or its intermediate authorities are trusted by Chrome.</p>
+<div class="align-center figure" id="id21">
+<a class="reference internal image-reference" href="../_images/6_chrome_certificate_is_added_to_authorities_list.png"><img alt="Chrome certificate is added to authorities list" src="../_images/6_chrome_certificate_is_added_to_authorities_list.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Chrome certificate is added to authorities list</span></p>
+</div>
+<p>You may inspect the certificate by pressing the view button, and check if this is the trusted certificate. In case you don&#8217;t trust the certificate you can also delete it again.</p>
+<div class="align-center figure" id="id22">
+<a class="reference internal image-reference" href="../_images/7_chrome_inspect_the_certificate_by_clicking_on_view_button.png"><img alt="Chrome inspect the certificate by clicking on the view button" src="../_images/7_chrome_inspect_the_certificate_by_clicking_on_view_button.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Chrome inspect the certificate by clicking on the view button</span></p>
+</div>
+<p>The installation is sucessfull. When you visit a website using server certificates signed by the private root authority, you will see it has a green lock and the connection is trusted.</p>
+<div class="align-center figure" id="id23">
+<a class="reference internal image-reference" href="../_images/8_chrome_visit_self-signed_website_and_verify_it_is_trusted.png"><img alt="Chrome visit self-signed website and verify it is trusted" src="../_images/8_chrome_visit_self-signed_website_and_verify_it_is_trusted.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Chrome visit self-signed website and verify it is trusted</span></p>
+</div>
+</div>
+<div class="section" id="firefox">
+<span id="browser-firefox"></span><h2>Firefox</h2>
+<p>Firefox manages its own trusted certificate list, so you always need to add the root authority certificate to the browser even if you have installed it system wide.
+To add the certificate to Firefox execute the following steps.</p>
+<p>Open Firefox and go to the settings page.</p>
+<div class="align-center figure" id="id24">
+<a class="reference internal image-reference" href="../_images/1_firefox_open_settings_page.png"><img alt="Firefox open settings page" src="../_images/1_firefox_open_settings_page.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Firefox open settings page</span></p>
+</div>
+<p>Go to the advanced settings page, and click on the certificates view.</p>
+<div class="align-center figure" id="id25">
+<a class="reference internal image-reference" href="../_images/2_firefox_click_on_advanced_settings_and_go_to_certificates.png"><img alt="Firefox click on advanced settings and go to certificates view" src="../_images/2_firefox_click_on_advanced_settings_and_go_to_certificates.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Firefox click on advanced settings and go to certificates view</span></p>
+</div>
+<p>Within the certificates, you need to add the certificate as an authority. Go to the right tab and click the import button.</p>
+<div class="align-center figure" id="id26">
+<a class="reference internal image-reference" href="../_images/3_firefox_import_the_root_certificate.png"><img alt="Firefox import the root certificate" src="../_images/3_firefox_import_the_root_certificate.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Firefox import the root certificate</span></p>
+</div>
+<p>Select the root certificate as generated by BounCA.</p>
+<div class="align-center figure" id="id27">
+<a class="reference internal image-reference" href="../_images/4_firefox_select_the_root_certificate_file.png"><img alt="Firefox select the root certificate file" src="../_images/4_firefox_select_the_root_certificate_file.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Firefox select the root certificate file</span></p>
+</div>
+<p>Add the certificate and select the trust levels of it.</p>
+<div class="align-center figure" id="id28">
+<a class="reference internal image-reference" href="../_images/5_firefox_select_the_trust_rules.png"><img alt="Firefox select trust rules" src="../_images/5_firefox_select_the_trust_rules.png" style="height: 300px;" /></a>
+<p class="caption"><span class="caption-text">Firefox select trust rules</span></p>
+</div>
+<p>After clicking <strong>OK</strong>, you will notice the root authority has been added to the authorities list. This means that all certificates signed by this root CA or its intermediate authorities are trusted by Chrome.</p>
+<div class="align-center figure" id="id29">
+<a class="reference internal image-reference" href="../_images/6_firefox_the_root_certificate_has_been_added.png"><img alt="Firefox certificate is added to authorities list" src="../_images/6_firefox_the_root_certificate_has_been_added.png" style="height: 400px;" /></a>
+<p class="caption"><span class="caption-text">Firefox certificate is added to authorities list</span></p>
+</div>
+<p>You may inspect the certificate by pressing the view button, and check if this is the trusted certificate. In case you don&#8217;t trust the certificate you can also delete it again.</p>
+<div class="align-center figure" id="id30">
+<a class="reference internal image-reference" href="../_images/7_firefox_inspect_the_root_certificate.png"><img alt="Firefox inspect the certificate by clicking on the view button" src="../_images/7_firefox_inspect_the_root_certificate.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Firefox inspect the certificate by clicking on the view button</span></p>
+</div>
+<p>The installation is sucessfull. When you visit a website using server certificates signed by the private root authority, you will see it has a green lock and the connection is trusted.</p>
+<div class="align-center figure" id="id31">
+<a class="reference internal image-reference" href="../_images/8_firefox_visit_self-signed_website_and_verify_it_is_trusted.png"><img alt="Firefox visit self-signed website and verify it is trusted" src="../_images/8_firefox_visit_self-signed_website_and_verify_it_is_trusted.png" style="height: 500px;" /></a>
+<p class="caption"><span class="caption-text">Firefox visit self-signed website and verify it is trusted</span></p>
+</div>
+</div>
+<div class="section" id="linux-ubuntu-debian">
+<span id="id4"></span><h2>Linux Ubuntu/Debian</h2>
+<p>Ubuntu/Debian allows you to install extra root certificates via the <code class="docutils literal"><span class="pre">/usr/local/share/ca-certificates</span></code> directory.
+To install your own root authority certificate copy your root certificate to <code class="docutils literal"><span class="pre">/usr/local/share/ca-certificates</span></code>. Make sure the file has the <code class="docutils literal"><span class="pre">.crt</span></code> extension. so rename it when necessary.</p>
+<p>After you copied your certificate to the <code class="docutils literal"><span class="pre">/usr/local/share/ca-certificates</span></code> folder you need to refresh the installed certificates and hashes. Within ubuntu/debian you can perform this action via one command:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>sudo update-ca-certificates
+</pre></div>
+</div>
+<p>You will notice that the command reports it has installed one (or more) new certificate. The certificate has been added to the Operating System and signed certificates will be trusted.</p>
+<p>To remove the certificate, just remove it from <code class="docutils literal"><span class="pre">/usr/local/share/ca-certificates</span></code> and run</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>sudo update-ca-certificates --fresh
+</pre></div>
+</div>
+</div>
+<div class="section" id="linux-red-hat-centos">
+<span id="linux-redhat-centos"></span><h2>Linux Red Hat / CentOS</h2>
+<p>The installation of a root certificate on Red Hat or CentOS depends on the release. We discuss release 6 and 5 in this section
+Red Hat and CentOS</p>
+<div class="section" id="red-hat-centos-6">
+<h3>Red Hat / CentOS 6</h3>
+<p>To manage certificates in CentOS 6 you need the <code class="docutils literal"><span class="pre">ca-certificates</span></code> package. Install this package by the following command</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>yum install ca-certificates
+</pre></div>
+</div>
+<p>Enable the dynamic CA configuration feature:</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>update-ca-trust force-enable
+</pre></div>
+</div>
+<p>Make sure the root certificate has the <code class="docutils literal"><span class="pre">.crt</span></code> extension and copy it to <code class="docutils literal"><span class="pre">/etc/pki/ca-trust/source/anchors/</span></code></p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>cp rootca.crt /etc/pki/ca-trust/source/anchors/
+</pre></div>
+</div>
+<p>Update the trusted certificate list</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>update-ca-trust extract
+</pre></div>
+</div>
+</div>
+<div class="section" id="red-hat-centos-5">
+<h3>Red Hat / CentOS 5</h3>
+<p>The older CentOS releases don&#8217;t offer a certificate manager. To install a new root certificate, you need to add the certificate to a trusted bundle file.</p>
+<div class="highlight-shell"><div class="highlight"><pre><span></span>cat rootca.crt &gt;&gt; /etc/pki/tls/certs/ca-bundle.crt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="freebsd">
+<span id="id5"></span><h2>FreeBSD</h2>
+<p>FreeBSD doesn&#8217;t offer a centralized root certificate manager.
+If you want to add a root authority you can add it directly to the certificates managed by OpenSSL.
+This depends on your configuration and is for now out of the scope of this guide.</p>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<style media="screen" type="text/css">
+  .fb_iframe_widget span {
+      vertical-align: baseline !important;
+  }
+</style>
+<footer class="bs-docs-footer" role="contentinfo">
+    <div class="container">
+        <p class="pull-right">
+              <a href="#">Back to top</a>
+              
+        </p>
+        <ul class="bs-docs-footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="https://github.com/repleo/bounca" target="_blank">GitHub</a></li>
+            <li><a href="https://twitter.com/gobounca" target="_blank">Twitter</a></li>
+            <li><a href="/docs/index.html">Docs</a></li>
+            <li><a href="mailto:jeroen@bounca.org">Contribute?</a></li>
+        </ul>
+        <ul class="bs-docs-footer-links">
+            <li>Share on:</li>
+            <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="gobounca">Tweet</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></li>
+            <li><div class="fb-share-button" data-layout="button" data-mobile-iframe="true" style="margin: 0 auto;"></div></li>
+
+            <li><div class="g-plus" data-action="share" data-annotation="none"></div></li>
+        </ul>
+        <p>Designed and built by <a href="https://twitter.com/repleo_sw" target="_blank">@repleo</a>.</p>
+        <p>Code licensed <a rel="license" href="https://github.com/repleo/bounca/blob/master/LICENSE" target="_blank">Apache 2.0</a>, docs <a rel="license" href="https://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.</p>
+		<p>
+		      Last updated on Jun 29, 2016.<br/>
+		</p>
+    </div>
+</footer>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- tumblr-ad -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+          data-ad-client="ca-pub-2021303705454992"
+               data-ad-slot="6971924867"></ins>
+               <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+               </script>
+
+  </body>
+</html>
